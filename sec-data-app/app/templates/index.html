@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEC Holdings Intelligence Platform</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .hero-section {
+            background-color: #f8f9fa;
+            padding: 4rem 0;
+        }
+        .search-section {
+            padding: 2rem 0;
+        }
+        .results-section {
+            min-height: 400px;
+        }
+        .loading-spinner {
+            display: none;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">SHIP</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/metrics">Metrics</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="display-4">SEC Holdings Intelligence Platform</h1>
+            <p class="lead">Track institutional ownership and analyze market trends with advanced analytics</p>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form id="searchForm" class="mb-4">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Enter ticker symbol or company name">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="startDate">Start Date</label>
+                                    <input type="date" class="form-control" id="startDate">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="endDate">End Date</label>
+                                    <input type="date" class="form-control" id="endDate">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+        <div class="container">
+            <div class="loading-spinner text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div id="resultsContainer"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <span>© 2024 SEC Holdings Intelligence Platform. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const searchInput = document.getElementById('searchInput').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (!searchInput) {
+                alert('Please enter a search term');
+                return;
+            }
+            
+            // Show loading spinner
+            document.querySelector('.loading-spinner').style.display = 'block';
+            document.getElementById('resultsContainer').innerHTML = '';
+            
+            try {
+                const response = await fetch('/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: searchInput,
+                        startDate: startDate,
+                        endDate: endDate
+                    })
+                });
+                
+                const data = await response.json();
+                
+                // Hide loading spinner
+                document.querySelector('.loading-spinner').style.display = 'none';
+                
+                // Display results
+                const resultsContainer = document.getElementById('resultsContainer');
+                if (data.error) {
+                    resultsContainer.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+                } else {
+                    // Create results display
+                    let resultsHtml = '<div class="card"><div class="card-body">';
+                    resultsHtml += `<h5 class="card-title">Results for ${searchInput}</h5>`;
+                    
+                    if (data.filings && data.filings.length > 0) {
+                        resultsHtml += '<table class="table">';
+                        resultsHtml += '<thead><tr><th>Date</th><th>Type</th><th>Filer</th><th>Company</th><th>Ownership</th></tr></thead>';
+                        resultsHtml += '<tbody>';
+                        
+                        data.filings.forEach(filing => {
+                            resultsHtml += `<tr>
+                                <td>${filing.date}</td>
+                                <td>${filing.type}</td>
+                                <td>${filing.filer}</td>
+                                <td>${filing.company}</td>
+                                <td>${filing.ownership}%</td>
+                            </tr>`;
+                        });
+                        
+                        resultsHtml += '</tbody></table>';
+                    } else {
+                        resultsHtml += '<p>No results found.</p>';
+                    }
+                    
+                    resultsHtml += '</div></div>';
+                    resultsContainer.innerHTML = resultsHtml;
+                }
+            } catch (error) {
+                document.querySelector('.loading-spinner').style.display = 'none';
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="alert alert-danger">
+                        An error occurred while fetching results. Please try again.
+                    </div>`;
+            }
+        });
+    </script>
+</body>
+</html>

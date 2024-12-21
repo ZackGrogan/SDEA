@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Download SEC Filing Data</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">SEC Filings Data</h5>
+                </div>
+                <div class="card-body">
+                    <p>Download the complete SEC filings dataset.</p>
+                    <a href="{{ filings_path }}" class="btn btn-primary" download>
+                        <i class="fas fa-download"></i> Download Filings CSV
+                    </a>
+                    <small class="d-block mt-2 text-muted">
+                        File size: {{ filings_size }} | Last updated: {{ filings_date }}
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Threshold Exits Data</h5>
+                </div>
+                <div class="card-body">
+                    <p>Download the ownership threshold exit analysis.</p>
+                    <a href="{{ exits_path }}" class="btn btn-secondary" download>
+                        <i class="fas fa-download"></i> Download Threshold Exits CSV
+                    </a>
+                    <small class="d-block mt-2 text-muted">
+                        File size: {{ exits_size }} | Last updated: {{ exits_date }}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Data Export Information</h5>
+            <ul>
+                <li>CSV files are UTF-8 encoded</li>
+                <li>Timestamps are in ISO 8601 format</li>
+                <li>Numeric columns use decimal point notation</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

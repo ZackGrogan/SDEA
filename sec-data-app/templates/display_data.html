@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mb-4">SEC Filing Analysis Results</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Filings Overview</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped" id="filings-table">
+                        <thead>
+                            <tr>
+                                <th>CUSIP</th>
+                                <th>Company</th>
+                                <th>Filing Type</th>
+                                <th>Date</th>
+                                <th>Ownership %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for filing in filings %}
+                            <tr>
+                                <td>{{ filing.cusip }}</td>
+                                <td>{{ filing.company_name }}</td>
+                                <td>{{ filing.filing_type }}</td>
+                                <td>{{ filing.filing_date }}</td>
+                                <td>{{ filing.ownership_percentage }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Threshold Exits</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped" id="threshold-table">
+                        <thead>
+                            <tr>
+                                <th>CUSIP</th>
+                                <th>Company</th>
+                                <th>Previous %</th>
+                                <th>Current %</th>
+                                <th>Exit Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for exit in threshold_exits %}
+                            <tr>
+                                <td>{{ exit.cusip }}</td>
+                                <td>{{ exit.company_name }}</td>
+                                <td>{{ exit.previous_percentage }}%</td>
+                                <td>{{ exit.current_percentage }}%</td>
+                                <td>{{ exit.exit_date }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

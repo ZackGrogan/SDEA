@@ -1,0 +1,12 @@
+{
+    "0000320193": {
+        "ticker": "AAPL",
+        "name": "Apple Inc.",
+        "exchange": "NASDAQ"
+    },
+    "0000789019": {
+        "ticker": "MSFT", 
+        "name": "Microsoft Corporation",
+        "exchange": "NASDAQ"
+    }
+}

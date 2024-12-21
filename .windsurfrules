@@ -1,0 +1,62 @@
+Data Retrieval:
+- Implement modules to access SEC filings using the SEC EDGAR Full-Text Search API.
+- Ensure all API requests include the necessary headers (e.g., `User-Agent`) and comply with SEC rate limits.
+- Implement pagination handling to retrieve all relevant filings across multiple pages.
+- Store retrieved filings in a structured format for efficient parsing.
+- Define clear retry mechanisms with exponential backoff for handling transient network issues during retrieval.
+
+Market Data Integration:
+- Use `yfinance` or equivalent APIs to retrieve historical market data, including stock prices, market capitalization, share performance data, and dividend information.
+- Handle API rate limits and terms of service compliance.
+- Implement caching mechanisms to reduce redundant data requests and improve performance.
+- Validate retrieved market data to ensure accuracy and completeness.
+
+Data Parsing:
+- Use `BeautifulSoup` and `lxml` for parsing different filing formats (HTML, XML, plain text).
+- Implement robust error handling to manage inconsistencies and variations in filings.
+- Define specific parsing logic for 13D, 13G, and their amendments (13D/A, 13G/A).
+- Extract all required data points as specified in the bounty description.
+
+Data Processing and Enrichment:
+- Enrich extracted data with financial information such as stock prices, market capitalization, share price performance over specified intervals (+7, +30, +182, +365, +730 days), and dividends.
+- Adjust share prices for stock splits and dividends to ensure accuracy.
+- Map CUSIPs to stock symbols and company names using available datasets (e.g., SEC's `company_tickers.json`).
+- Calculate market capitalization using stock prices and shares outstanding.
+
+Threshold Exit Tracking:
+- Track shareholders falling below the 5% ownership threshold by comparing sequential filings.
+- Determine the absence of filings beyond certain dates as potential indicators of falling below the threshold.
+- Include a marker or flag (e.g., "No longer ≥ 5%") in the dataset when a threshold exit is detected.
+
+Data Storage:
+- Utilize Pandas DataFrames for in-memory data manipulation.
+- Consider using SQLite for persistent storage if necessary.
+- Implement data validation checks before storing data to ensure data integrity.
+
+Frontend Development (Flask and Bootstrap):
+- Use Flask and Bootstrap to create a responsive and user-friendly interface.
+- Focus on functionality over aesthetics.
+- Implement clear navigation and user input forms for specifying search criteria (e.g., date ranges).
+- Display retrieved and processed data in a clear and organized tabular format.
+
+User Experience:
+- Provide real-time feedback during data processing (e.g., progress bars, loading indicators).
+- Ensure accessibility and mobile responsiveness.
+- Implement client-side validation to prevent invalid user inputs.
+- Provide user-friendly error messages and guidance in case of errors.
+
+Documentation and Compliance:
+- Document the methodology, data sources, and assumptions made during data processing.
+- Ensure all activities comply with legal guidelines and data usage policies (including SEC's fair access policy).
+- Provide clear instructions on how to use the application and interpret the results.
+
+Performance Optimization:
+- Optimize data retrieval and processing for efficiency.
+- Implement asynchronous processing (e.g., using Celery) if necessary to prevent blocking.
+- Minimize database queries and optimize data access patterns.
+
+Error Handling and Validation:
+- Implement comprehensive error handling and data validation throughout the application.
+- Log errors for debugging purposes and provide user-friendly error messages.
+- Implement input validation to prevent invalid data from being processed.
+- Handle potential exceptions during data retrieval, parsing, and processing.

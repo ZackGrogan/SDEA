@@ -1,0 +1,57 @@
+# SEC Holdings Intelligence Platform (SHIP)
+# Project Contact: zackariahgrogan@gmail.com
+# Purpose: Academic Research - SEC Form 13G/13D Analysis
+
+# Web Framework and Async Support
+flask==3.0.0
+flask-cors==4.0.0
+quart==0.19.4
+
+# Async HTTP and Networking
+aiohttp==3.9.1
+asyncio==3.4.3
+requests==2.31.0
+
+# Data Processing and Analysis
+pandas==2.1.4
+numpy>=1.22.4
+yfinance==0.2.33
+
+# Web Scraping and Parsing
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# HTTP and Environment
+python-dotenv==0.20.0
+
+# Caching and Performance
+redis==4.3.4
+gunicorn==20.1.0
+prometheus-client==0.14.1
+
+# Advanced Data Processing and NLP
+spacy==3.5.2
+
+# Logging and Monitoring
+structlog==24.1.0
+python-json-logger==2.0.7
+
+# Testing and Debugging Dependencies
+pytest==7.4.4
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+coverage==7.4.0
+click==8.1.7
+
+# Test Execution and API Dependencies
+flask-restful==0.3.9
+flask-apispec==0.11.0
+marshmallow==3.20.1
+apispec==6.3.0
+webargs==8.3.0
+
+# Recommended Spacy Language Model
+# Note: Install separately with 'python -m spacy download en_core_web_sm'
+
+# Rate Limiting and Retry Mechanisms
+tenacity==8.2.3

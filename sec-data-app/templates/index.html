@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="text-center mb-4" id="page-title">SEC Form 13G/13D Analysis</h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title" id="data-retrieval-title">Data Retrieval</h2>
+                <form id="data-retrieval-form" aria-labelledby="data-retrieval-title">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="start-year" class="form-label">Start Year</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="start-year" 
+                                name="start-year"
+                                value="2009" 
+                                min="1900" 
+                                max="{{ current_year }}"
+                                aria-describedby="start-year-help"
+                                required
+                            >
+                            <small id="start-year-help" class="form-text text-muted">
+                                Enter a year between 1900 and {{ current_year }}
+                            </small>
+                            <div class="invalid-feedback">
+                                Please enter a valid start year between 1900 and {{ current_year }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="end-year" class="form-label">End Year</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="end-year" 
+                                name="end-year"
+                                value="{{ current_year }}" 
+                                min="1900" 
+                                max="{{ current_year }}"
+                                aria-describedby="end-year-help"
+                                required
+                            >
+                            <small id="end-year-help" class="form-text text-muted">
+                                Enter a year between 1900 and {{ current_year }}
+                            </small>
+                            <div class="invalid-feedback">
+                                Please enter a valid end year between 1900 and {{ current_year }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="ciks" class="form-label">Company CIKs</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="ciks" 
+                                name="ciks"
+                                aria-describedby="ciks-help"
+                                placeholder="Enter CIKs separated by commas (e.g., 0000320193, 0000789019)"
+                                required
+                            >
+                            <small id="ciks-help" class="form-text text-muted">
+                                Enter one or more 10-digit Central Index Keys (CIKs) separated by commas
+                            </small>
+                            <div class="invalid-feedback">
+                                Please enter valid 10-digit CIKs
+                            </div>
+                        </div>
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary w-100" 
+                        aria-label="Retrieve SEC Filings"
+                    >
+                        Retrieve SEC Filings
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h2 class="card-title" id="about-tool-title">About This Tool</h2>
+                <p aria-describedby="about-tool-title">
+                    Analyze SEC Form 13G and 13D filings to track significant shareholder ownership changes.
+                </p>
+                <ul aria-label="Tool Features">
+                    <li>Retrieve historical filing data by Company CIK</li>
+                    <li>Track ownership threshold exits</li>
+                    <li>Download processed data</li>
+                </ul>
+                <div class="alert alert-info" role="alert">
+                    <strong>Tip:</strong> Find Company CIKs on the 
+                    <a href="https://www.sec.gov/edgar/searchedgar/companysearch.html" 
+                       target="_blank" 
+                       rel="noopener noreferrer">
+                        SEC EDGAR Company Search
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

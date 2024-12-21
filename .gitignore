@@ -1,0 +1,78 @@
+# Python-specific ignores
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+.env/
+.venv/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# IDE-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Logs and databases
+logs/
+*.sqlite3
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Sensitive information
+*.env
+.secrets/
+
+# Documentation build files
+docs/_build/
+docs/build/
+*.pdf
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Data files (optional - uncomment if you want to ignore data files)
+# *.csv
+# *.json
+# *.xlsx
+
+# Specific to this project
+data/raw/
+data/processed/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Performance and profiling
+*.prof
+*.pstats
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# Specific documentation files (if needed)
+docs/generated/
+
+# Ignore large binary or data files
+*.zip
+*.tar.gz
+*.tar
+

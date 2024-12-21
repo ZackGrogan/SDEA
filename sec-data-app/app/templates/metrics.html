@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIP Metrics</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .metrics-card {
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 1.5rem;
+        }
+        .performance-positive {
+            color: #28a745;
+        }
+        .performance-negative {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">SHIP</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/metrics">Metrics</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Metrics Content -->
+    <div class="container mt-4">
+        <!-- Performance Overview -->
+        <div class="card metrics-card">
+            <div class="card-body">
+                <h5 class="card-title">Performance Overview</h5>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6>7-Day Average</h6>
+                                <h3 class="{{ 'performance-positive' if metrics.avg_7d >= 0 else 'performance-negative' }}">
+                                    {{ '%+.2f' % metrics.avg_7d }}%
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6>30-Day Average</h6>
+                                <h3 class="{{ 'performance-positive' if metrics.avg_30d >= 0 else 'performance-negative' }}">
+                                    {{ '%+.2f' % metrics.avg_30d }}%
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6>182-Day Average</h6>
+                                <h3 class="{{ 'performance-positive' if metrics.avg_182d >= 0 else 'performance-negative' }}">
+                                    {{ '%+.2f' % metrics.avg_182d }}%
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6>365-Day Average</h6>
+                                <h3 class="{{ 'performance-positive' if metrics.avg_365d >= 0 else 'performance-negative' }}">
+                                    {{ '%+.2f' % metrics.avg_365d }}%
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Charts -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card metrics-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Market Cap Distribution</h5>
+                        <div class="chart-container">
+                            <canvas id="marketCapChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card metrics-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Performance Distribution</h5>
+                        <div class="chart-container">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Performers Table -->
+        <div class="card metrics-card">
+            <div class="card-body">
+                <h5 class="card-title">Top Performers</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Market Cap</th>
+                                <th>7-Day</th>
+                                <th>30-Day</th>
+                                <th>182-Day</th>
+                                <th>365-Day</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for performer in top_performers %}
+                            <tr>
+                                <td>{{ performer.company }}</td>
+                                <td>${{ '{:,.0f}'.format(performer.market_cap / 1000000) }}M</td>
+                                <td class="{{ 'performance-positive' if performer.perf_7d >= 0 else 'performance-negative' }}">
+                                    {{ '%+.2f' % performer.perf_7d }}%
+                                </td>
+                                <td class="{{ 'performance-positive' if performer.perf_30d >= 0 else 'performance-negative' }}">
+                                    {{ '%+.2f' % performer.perf_30d }}%
+                                </td>
+                                <td class="{{ 'performance-positive' if performer.perf_182d >= 0 else 'performance-negative' }}">
+                                    {{ '%+.2f' % performer.perf_182d }}%
+                                </td>
+                                <td class="{{ 'performance-positive' if performer.perf_365d >= 0 else 'performance-negative' }}">
+                                    {{ '%+.2f' % performer.perf_365d }}%
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Metrics Charts -->
+    <script>
+        // Market Cap Distribution Chart
+        const marketCapCtx = document.getElementById('marketCapChart').getContext('2d');
+        new Chart(marketCapCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ market_cap_labels | safe }},
+                datasets: [{
+                    label: 'Number of Companies',
+                    data: {{ market_cap_counts | safe }},
+                    backgroundColor: '#4158D0'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Performance Distribution Chart
+        const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(performanceCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ performance_labels | safe }},
+                datasets: [{
+                    label: '30-Day Performance',
+                    data: {{ performance_counts | safe }},
+                    backgroundColor: '#C850C0'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
